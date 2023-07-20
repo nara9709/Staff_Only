@@ -14,6 +14,7 @@ export const iconStyle = 'w-6 h-6';
 function FooterNav() {
   const pathName = usePathname();
   const { data: session } = useSession();
+  const user = session?.user;
 
   const navMenus = [
     {
@@ -50,9 +51,14 @@ function FooterNav() {
 
         {/* 로그인한 유저가 있다면 유저 아바타를, 없다면 로그인 아이콘을 보여준다. */}
         {session?.user ? (
-          <li>
-            <Avatar />
-          </li>
+          <Link href={'/profile'}>
+            <li>
+              <Avatar
+                image={user?.image as string}
+                name={user?.name as string}
+              />
+            </li>
+          </Link>
         ) : (
           <Link href="/login">
             <li>

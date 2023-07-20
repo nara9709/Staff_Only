@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 import Header from '@/components/Header';
 import FooterNav from '@/components/FooterNav';
+import { SWRContext } from '@/context/SWRContext';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
           <header>
             <Header />
           </header>
-          <main>{children}</main>
+          <SWRContext>
+            <main>{children}</main>
+          </SWRContext>
           <FooterNav />
         </AuthContext>
       </body>

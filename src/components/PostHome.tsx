@@ -1,7 +1,17 @@
 import React from 'react';
+import PopularPosts from './PopularPosts';
 
 function PostHome() {
-  return <div>Home!</div>;
+  //최근 7일 이내에 조회수가 가장 높은 포스트 3개를 상단에 보여줌
+  //카테고리를 상태로 보관하고 있으며 그 카테고리에 따라 가져오는 포스트들이 달라짐(초기값:모든 포스트)
+  //포스트를 누르면 'post/[id]'이동하며 이동한 페이지에서는 id를 이용해서 swr로 포스트 내용을 모두 가져온다.
+
+  return (
+    <div>
+      <PopularPosts />
+      Home!
+    </div>
+  );
 }
 
 export default PostHome;

@@ -6,6 +6,7 @@ import { iconStyle } from './FooterNav';
 
 function Header() {
   const { data: session } = useSession();
+
   return (
     <div className="py-3 px-4 bg-white h-16 flex justify-between items-center">
       <h1 className="uppercase flex items-center font-bold text-blue-950 text-2xl md:text-4xl ">
