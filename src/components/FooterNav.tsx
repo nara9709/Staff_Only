@@ -7,13 +7,14 @@ import { RiSearch2Line, RiSearch2Fill } from 'react-icons/ri';
 import { HiLogin } from 'react-icons/hi';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import Avatar from './Avatar';
+import Avatar from './UI/Avatar';
+
+export const iconStyle = 'w-6 h-6';
 
 function FooterNav() {
   const pathName = usePathname();
   const { data: session } = useSession();
 
-  const iconStyle = 'w-6 h-6';
   const navMenus = [
     {
       title: '휴게실',

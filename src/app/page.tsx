@@ -1,9 +1,9 @@
-import Login from '@/components/Login';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import PostHome from '@/components/PostHome';
 
 export default async function RootPage() {
-  return <section>
-    
-  </section>;
+  return (
+    <section>
+      <PostHome />
+    </section>
+  );
 }
