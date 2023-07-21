@@ -15,7 +15,7 @@ function PopularPosts() {
         지난 7일 <span className="font-bold text-blue-900 ">인기글</span>
       </h1>
       {posts && (
-        <div className="w-full h-full border-2 border-blue-900 rounded-lg bg-white  p-2">
+        <div className="w-full h-full border-2 border-blue-900 rounded-lg bg-white p-2 pt-0">
           <ul className="flex flex-col">
             {posts.map((post, index) => (
               <li
@@ -26,7 +26,7 @@ function PopularPosts() {
               >
                 <Link href={`/post/${post.id} `}>
                   <p
-                    className="text-sm my-1 hover:opacity-50 md:text-xl w-[240px]
+                    className="text-sm my-1 hover:opacity-50 md:text-xl w-[320px]
                     md:w-[500px]
                     text-ellipsis overflow-hidden
                      whitespace-nowrap

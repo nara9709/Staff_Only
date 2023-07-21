@@ -8,7 +8,7 @@ function Header() {
   const { data: session } = useSession();
 
   return (
-    <div className="py-3 px-4 bg-white h-16 flex justify-between items-center">
+    <div className=" fixed top-0 left-0 w-full py-3 px-4 bg-white h-16 flex justify-between items-center">
       <h1 className="uppercase flex items-center font-bold text-blue-950 text-2xl md:text-4xl ">
         Staff <span className=" text-gray-700 ml-1 "> Only</span>
       </h1>
