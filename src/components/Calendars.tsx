@@ -8,40 +8,33 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import CalendarModal from './CalendarModal';
 import useSWR from 'swr';
 import moment from 'moment';
+import CalendarCalInfo from './CalendarCalInfo';
+import { DefaultCalendar } from '@/model/calendar';
+import { Fade } from '@mui/material';
 
 type ValuePiece = Date | null | string;
 export type DayValue = ValuePiece | [ValuePiece, ValuePiece];
 
-type DaysType = {
-  days: string[];
-};
-
 function Calendars() {
   const [showModal, setShowModal] = useState(false);
   const [DayValue, onChange] = useState<DayValue>(new Date().toISOString());
-  const portalElement = document.getElementById('portal')!;
 
-  const { data } = useSWR<DaysType>('/api/allDate');
-
-  console.log(data);
+  const { data } = useSWR<DefaultCalendar>('/api/allDate');
+  const days = data?.days ? data.days.map((day) => day.fullDate) : [];
 
   return (
     <>
-      <section className="w-full h-[600px] ">
-        <h1 className="bg-white pt-7 pb-5 pl-2 font-bold text-left text-lg">
-          당신의 노력을 기록해두세요😇
-        </h1>
-
+      <div className="w-full h-[600px] ">
         <Calendar
           onChange={onChange}
           value={DayValue}
           onClickDay={() => console.log('click!')}
           tileContent={
             data &&
-            data.days.length > 0 &&
+            days.length > 0 &&
             (({ date, view }) => {
               if (
-                data.days.find(
+                days.find(
                   (x: string) => x === moment(date).format('YYYY-MM-DD')
                 )
               ) {
@@ -61,17 +54,20 @@ function Calendars() {
         />
 
         <div
-          className=" bg-blue-950 w-12 h-12 rounded-full flex items-center justify-center"
+          className=" bg-blue-950 w-12 h-12 rounded-full flex items-center justify-center fixed right-2 bottom-24"
           onClick={() => setShowModal(true)}
         >
           <AiOutlinePlus fill="white" className=" w-7 h-7 m-auto" />
         </div>
-      </section>
+        <CalendarCalInfo />
+      </div>
+
       {/* plus 버튼을 추가하면 시간 기입을 위한 모달창을 보여줌 */}
       {showModal &&
+        typeof window === 'object' &&
         createPortal(
           <CalendarModal date={DayValue} onClose={() => setShowModal(false)} />,
-          portalElement
+          document.getElementById('portal')!
         )}
     </>
   );

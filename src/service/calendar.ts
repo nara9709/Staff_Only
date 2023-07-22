@@ -4,7 +4,7 @@ import { DefaultUserInfo } from '@/model/user';
 
 export async function getDataContainedDate(userEmail: string) {
   return client.fetch(
-    `*[_type == "calendars" && author->email == "${userEmail}"][0]{"days":days[].fullDate}`
+    `*[_type == "calendars" && author->email == "${userEmail}"][0]`
   );
 }
 
