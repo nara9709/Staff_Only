@@ -19,6 +19,18 @@ export async function addUser({ id, email, image, name }: OAuthUser) {
     email,
     bookmarks: [],
     wagePerHour: 0,
-    wagePerExtraHour: 0,
   });
+}
+
+export async function getUserByEmail(email: string) {
+  return client.fetch(`*[_type == "user" && email == "${email}"]{
+    name,
+    username,
+    "id":_id,
+    userProfileImage,
+    "calendar":calendar->_id,
+    email,
+    wagePerHour,
+    "bookmars":bookmarks[]->_id
+  }`);
 }

@@ -26,7 +26,10 @@ export default function RootLayout({
             <Header />
           </header>
           <SWRContext>
-            <main className="overflow-auto  pt-16 pb-20">{children}</main>
+            <main className="overflow-auto  pt-16 pb-20">
+              {children}
+              <div id="portal"></div>
+            </main>
           </SWRContext>
           <FooterNav />
         </AuthContext>

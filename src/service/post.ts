@@ -15,9 +15,9 @@ export async function getPostsByCategory(page: string, category?: string) {
   const query = category
     ? `*[_type == "post" && category->category == "${category}"]`
     : `*[_type == "post"]`;
-  return client.fetch(`${query} | order(_createdAt desc)[0...${
-    Number(page) * 2
-  }] {
+  return client.fetch(`${query} | order(_createdAt desc)[${
+    Number(page) === 0 ? page : Number(page) + 9
+  }...${(Number(page) + 1) * 20}] {
     subject,
     content,
     viewCount,

@@ -51,7 +51,7 @@ function PopularPosts() {
           variant="rectangular"
           animation="wave"
           width="100"
-          height="170px"
+          height="150px"
           className="rounded-md mt-2"
         />
       )}
