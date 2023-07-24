@@ -1,12 +1,13 @@
 'use client';
 
 import { PreviewPost } from '@/model/post';
-import Link from 'next/link';
+
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import PostCard from './PostCard';
 import { GrLinkNext, GrLinkPrevious } from 'react-icons/gr';
 import { IconButton, Skeleton } from '@mui/material';
+import useUser from '@/hooks/useUser';
 
 function PostList() {
   const [pageNum, setPageNum] = useState(0);
@@ -16,6 +17,7 @@ function PostList() {
       ? `/api/posts/${category}/${pageNum}`
       : `/api/posts/${pageNum}`,
   ]);
+  const { user } = useUser();
 
   const iconStyle = ' w-7 h-7 md:w-8 md:h-8';
 
@@ -25,9 +27,7 @@ function PostList() {
         {posts &&
           posts.map((post, index) => (
             <li key={index}>
-              <Link href={`/post/${post.id}`}>
-                <PostCard post={post} />
-              </Link>
+              <PostCard post={post} userBookmarks={user && user.bookmarks} />
             </li>
           ))}
       </ul>

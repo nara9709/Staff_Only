@@ -13,8 +13,6 @@ function Login() {
     redirect('/');
   }
 
-  console.log(session);
-
   const iconStyle = 'w-12 h-12';
   return (
     <div className="flex flex-col justify-center items-center mt-20 ">

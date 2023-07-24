@@ -1,4 +1,5 @@
-import { client } from './sanity';
+import { PreviewPost } from '@/model/post';
+import { client, urlFor } from './sanity';
 
 // 인기글 포스트 가져오기
 export async function getPopularPosts() {
@@ -23,10 +24,31 @@ export async function getPostsByCategory(page: string, category?: string) {
     viewCount,
     "category":category->category,
     "id":_id,
-    "image":image,
     "comments":count(comments),
     "createdAt":_createdAt,
     "author": {"username":author->username, "image":author->userProfileImage}
 
   }`);
+}
+
+export async function getPostByPostId(postId: string) {
+  return client.fetch(`*[_type == "post" && _id == "${postId}"][0]{
+    subject,
+    content,
+    viewCount,
+    "category":category->category,
+  "id":_id,
+    "image":image,
+    "comments":count(comments),
+    "createdAt":_createdAt,
+    "author": {"username":author->username, "image":author->userProfileImage, "id":_id},
+  }`);
+}
+
+export async function getCommentsByPostId(postId: string) {
+  return client.fetch(`*[_type == "post" && _id == "${postId}"][0]{
+    "postId":_id,
+      "comments": comments[]{..., "id":_key, "subComments":subComments[]{"commentToId":commentToId,"commentToUser":commentToUser->username,"author":{"username":author->username, "image":author->userProfileImage},"id":_key, subComment}, "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage}},
+     
+    }`);
 }
