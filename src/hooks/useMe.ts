@@ -6,13 +6,13 @@ async function updateBookmark(
   bookmark: boolean,
   userId: string
 ) {
-  return fetch('api/bookmarks', {
+  return fetch('/api/bookmarks', {
     method: 'PUT',
     body: JSON.stringify({ postId, bookmark, userId: userId }),
   }).then((res) => res.json());
 }
 
-export default function useUser(): any {
+export default function useMe() {
   const {
     data: user,
     isLoading,

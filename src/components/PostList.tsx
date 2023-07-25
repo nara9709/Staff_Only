@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import PostCard from './PostCard';
 import { GrLinkNext, GrLinkPrevious } from 'react-icons/gr';
 import { IconButton, Skeleton } from '@mui/material';
-import useUser from '@/hooks/useUser';
+import useMe from '@/hooks/useMe';
 
 function PostList() {
   const [pageNum, setPageNum] = useState(0);
@@ -17,7 +17,7 @@ function PostList() {
       ? `/api/posts/${category}/${pageNum}`
       : `/api/posts/${pageNum}`,
   ]);
-  const { user } = useUser();
+  const { user } = useMe();
 
   const iconStyle = ' w-7 h-7 md:w-8 md:h-8';
 

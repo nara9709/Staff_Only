@@ -7,6 +7,8 @@ type Props = {
 
 function PostContents({ post }: Props) {
   const { category, author, subject, createdAt, viewCount, content } = post;
+
+  console.log(post);
   return (
     <>
       <div>

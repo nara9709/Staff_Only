@@ -6,7 +6,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import ToggleButton from './UI/ToggleButton';
 
 import Link from 'next/link';
-import useUser from '@/hooks/useUser';
+import useMe from '@/hooks/useMe';
 import { useSession } from 'next-auth/react';
 
 type Props = {
@@ -30,7 +30,7 @@ function PostCard({ post, userBookmarks }: Props) {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const { setBookmarks } = useUser();
+  const { setBookmarks } = useMe();
 
   const handdleLike = (like: boolean) => {
     if (!user) {

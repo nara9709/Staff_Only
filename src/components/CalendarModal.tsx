@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { DayValue } from './Calendars';
 import { BiSave } from 'react-icons/bi';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { Icon, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 
 type Props = {
   date: DayValue;

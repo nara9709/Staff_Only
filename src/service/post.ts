@@ -39,16 +39,69 @@ export async function getPostByPostId(postId: string) {
     "category":category->category,
   "id":_id,
     "image":image,
-    "comments":count(comments),
+    "comments":count(comments)+count(subComments),
     "createdAt":_createdAt,
     "author": {"username":author->username, "image":author->userProfileImage, "id":_id},
   }`);
 }
 
+// 포스트 아이디로 댓글 목록 가져오기
 export async function getCommentsByPostId(postId: string) {
   return client.fetch(`*[_type == "post" && _id == "${postId}"][0]{
-    "postId":_id,
-      "comments": comments[]{..., "id":_key, "subComments":subComments[]{"commentToId":commentToId,"commentToUser":commentToUser->username,"author":{"username":author->username, "image":author->userProfileImage},"id":_key, subComment}, "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage}},
-     
-    }`);
+    "subComments":subComments[]{"commentToId":commentToId,"commentToUser":{"username":commentToUser->username, "id":commentToUser->_id},"author":{"username":author->username, "image":author->userProfileImage},"id":_key, subComment}, "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage},
+   "postId":_id,
+       "comments": comments[]{ ..., "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage}, "id":_key, },
+      
+     }`);
+}
+
+// 새로운 댓글 업로드
+export async function addNewComment(
+  postId: string,
+  comment: string,
+  authorId: string
+) {
+  return client
+    .patch(postId) //
+    .setIfMissing({ comments: [] }) //
+    .append('comments', [
+      {
+        comment,
+        _type: 'comment',
+        author: {
+          _ref: authorId,
+          _type: 'reference',
+        },
+      },
+    ]) //
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+// 대댓글 업로드
+export async function addSubComment(
+  commentToId: string,
+  commentToUserId: string,
+  comment: string,
+  authorId: string,
+  postId: string
+) {
+  return client
+    .patch(postId) //
+    .setIfMissing({ subComments: [] }) //
+    .append('subComments', [
+      {
+        subComment: comment,
+        commentToId,
+        _type: 'subComment',
+        author: {
+          _ref: authorId,
+          _type: 'reference',
+        },
+        commentToUser: {
+          _ref: commentToUserId,
+          _type: 'reference',
+        },
+      },
+    ]) //
+    .commit({ autoGenerateArrayKeys: true });
 }
