@@ -56,7 +56,7 @@ function PostCard({ post, userBookmarks }: Props) {
             {content}
           </p>
           <p className=" text-[0.7rem] text-gray-500">
-            조회수 {viewCount} • 댓글 {comments == null ? 0 : comments} •
+            조회수 {viewCount} • 댓글 {comments == null ? 0 : comments} •{' '}
             {parseDate(createdAt)}
           </p>
         </div>

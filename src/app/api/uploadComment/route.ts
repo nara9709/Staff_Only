@@ -3,7 +3,7 @@ import { authOptions } from '@/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   const user = session?.user;
 
@@ -19,10 +19,6 @@ export async function PUT(req: NextRequest) {
     commentToUserId,
     commentType,
   } = await req.json();
-
-  console.log(
-    `commentToId:${commentToId}, commentToUserId:${commentToUserId}, newComment:${newComment}, userId:${userId}`
-  );
 
   // 요청 쿼리에 따라서 필요한 인자 정보 확인
   if (

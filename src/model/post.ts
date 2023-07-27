@@ -22,11 +22,15 @@ export type PreviewPost = Omit<DefaultPost, 'image'> & {
 
 export type DefaultSubComment = {
   author: {
-    image: string;
+    userProfileImage: string;
     username: string;
+    id: string;
   };
   commentToId: string;
-  commentToUser: string;
+  commentToUser: {
+    username: string;
+    id: string;
+  };
   id: string;
   subcomment: string;
 };

@@ -10,7 +10,7 @@ export const SWRContext = ({ children }: Props) => {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 30000,
+        refreshInterval: 5000,
         fetcher: (url: string) => fetch(url).then((res) => res.json()),
       }}
     >

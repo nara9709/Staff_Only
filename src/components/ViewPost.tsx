@@ -14,7 +14,7 @@ function ViewPost({ id }: Props) {
 
   console.log(post);
   return (
-    <div>
+    <div className="px-6 py-8 bg-white h-[100vh]">
       {post && (
         <>
           <PostContents post={post} />

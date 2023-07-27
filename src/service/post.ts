@@ -48,7 +48,7 @@ export async function getPostByPostId(postId: string) {
 // 포스트 아이디로 댓글 목록 가져오기
 export async function getCommentsByPostId(postId: string) {
   return client.fetch(`*[_type == "post" && _id == "${postId}"][0]{
-    "subComments":subComments[]{"commentToId":commentToId,"commentToUser":{"username":commentToUser->username, "id":commentToUser->_id},"author":{"username":author->username, "image":author->userProfileImage},"id":_key, subComment}, "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage},
+    "subComments":subComments[]{"commentToId":commentToId,"commentToUser":{"username":commentToUser->username, "id":commentToUser->_id},"author":{"username":author->username, "image":author->userProfileImage, "id":author->_id},"id":_key, subComment}, "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage},
    "postId":_id,
        "comments": comments[]{ ..., "author": {"username":author->username, "id":author->_id, "userProfileImage":author->userProfileImage}, "id":_key, },
       
@@ -104,4 +104,21 @@ export async function addSubComment(
       },
     ]) //
     .commit({ autoGenerateArrayKeys: true });
+}
+
+// 댓글 지우기
+export async function deleteComment(
+  postId: string,
+  commentId: string,
+  commentType: 'comment' | 'subComment'
+) {
+  const toRemoveComment = `comments[_key=="${commentId}"]`;
+  const toRemoveSubComment = `subComments[_key=="${commentId}"]`;
+
+  return client
+    .patch(postId)
+    .unset([
+      `${commentType === 'comment' ? toRemoveComment : toRemoveSubComment}`,
+    ])
+    .commit();
 }

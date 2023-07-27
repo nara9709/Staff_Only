@@ -14,8 +14,6 @@ export async function PUT(req: NextRequest) {
 
   const { postId, bookmark, userId } = await req.json();
 
-  console.log(`Postid:${postId} / like:${bookmark}/userId:${userId}`);
-
   if (!postId || bookmark === undefined) {
     return new Response('Bad Request', { status: 400 });
   }
