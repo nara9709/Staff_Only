@@ -1,4 +1,6 @@
-export type PopularPost = Pick<PreviewPost, 'id' | 'subject'>;
+export type PopularPost = Pick<PreviewPost, 'id' | 'subject' | 'createdAt'> & {
+  author: string;
+};
 
 export type DefaultPost = {
   subject: string;
