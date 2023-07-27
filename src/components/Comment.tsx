@@ -67,7 +67,7 @@ function Comment({ fullComment, commentType, postId }: Props) {
       </div>
 
       <div className="flex items-center justify-between">
-        <p>
+        <p className="pl-2">
           {commentType === 'subcomment' && (
             <span className=" mr-2 font-semibold text-blue-900">
               {' '}
