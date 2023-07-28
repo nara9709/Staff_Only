@@ -15,9 +15,15 @@ function PopularPosts() {
       <h1 className=" text-gray-700 font-semibold mb-2 md:text-2xl md:mb-5">
         지난 7일 <span className="font-bold text-blue-900 ">인기글 🎉</span>
       </h1>
+
       {posts && (
         <div className="w-full h-full border-2 border-blue-900 rounded-lg bg-white p-2 pt-0">
           <ul className="flex flex-col">
+            {posts?.length === 0 && (
+              <p className="p-1">
+                지난 7일동안 새로 올라온 게시글이 없습니다🥲
+              </p>
+            )}
             {posts.map((post, index) => (
               <li
                 key={index}

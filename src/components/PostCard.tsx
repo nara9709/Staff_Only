@@ -3,6 +3,7 @@ import React from 'react';
 import Avatar from './UI/Avatar';
 import { parseDate } from '@/utils/date';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+
 import ToggleButton from './UI/ToggleButton';
 
 import Link from 'next/link';
@@ -13,6 +14,7 @@ type Props = {
   post: PreviewPost;
   userBookmarks?: string[];
 };
+
 function PostCard({ post, userBookmarks }: Props) {
   const {
     subject,
@@ -42,16 +44,17 @@ function PostCard({ post, userBookmarks }: Props) {
 
   return (
     <div className="w-full h-full mt-4 bg-white pt-6 pb-4 px-4">
+      <span></span>
       <Link href={`/post/${post.id}`}>
         <div className="flex flex-col justify-start">
           <p className=" text-xs text-blue-900 font-semibold">{category}</p>
           <p className="text-md font-semibold">{subject}</p>
-          <p className="flex items-center text-sm text-gray-500 mt-1 mb-2">
+          <span className="flex items-center text-sm text-gray-500 mt-1 mb-2">
             <span className="mr-1">
               <Avatar image={author.image} name={author.username} size="sm" />
             </span>
             {author.username}
-          </p>
+          </span>
           <p className="my-2 text-gray-900 text-ellipsis h-10 w-full overflow-hidden whitespace-nowrap">
             {content}
           </p>

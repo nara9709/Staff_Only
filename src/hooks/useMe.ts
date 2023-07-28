@@ -1,4 +1,6 @@
 import { DefaultUserInfo } from '@/model/user';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
 async function updateBookmark(
@@ -13,31 +15,36 @@ async function updateBookmark(
 }
 
 export default function useMe() {
+  const { data: session } = useSession();
+
   const {
     data: user,
     isLoading,
     error,
     mutate,
-  } = useSWR<DefaultUserInfo>('/api/me');
+  } = useSWR<DefaultUserInfo>(session ? '/api/me' : null);
 
-  const setBookmarks = (postId: string, bookmark: boolean) => {
-    if (!user) return;
+  const setBookmarks = useCallback(
+    (postId: string, bookmark: boolean) => {
+      if (!user) return;
 
-    const bookmarks = user?.bookmarks;
-    const newUser = {
-      ...user,
-      bookmarks: bookmarks
-        ? [...user.bookmarks, postId]
-        : user.bookmarks.filter((id) => id !== postId),
-    };
+      const bookmarks = user?.bookmarks;
+      const newUser = {
+        ...user,
+        bookmarks: bookmarks
+          ? [...user.bookmarks, postId]
+          : user.bookmarks.filter((id) => id !== postId),
+      };
 
-    return mutate(updateBookmark(postId, bookmark, user.id), {
-      optimisticData: newUser,
-      populateCache: false,
-      revalidate: false,
-      rollbackOnError: true,
-    });
-  };
+      return mutate(updateBookmark(postId, bookmark, user.id), {
+        optimisticData: newUser,
+        populateCache: false,
+        revalidate: false,
+        rollbackOnError: true,
+      });
+    },
+    [user, mutate]
+  );
 
   return { user, isLoading, error, setBookmarks };
 }

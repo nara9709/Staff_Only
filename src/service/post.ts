@@ -8,7 +8,7 @@ export async function getPopularPosts() {
   ).toISOString();
 
   return client.fetch(`
-  *[_type == 'post' && _createdAt > '${sevenDaysAgo}' ] | order(viewCount desc)[0..2]{subject,"id": _id, "author": author->username,"createdAt":_createdAt }`);
+  *[_type == "post" && _createdAt > "${sevenDaysAgo}" ] | order(viewCount desc)[0..2]{subject,"id": _id, "author": author->username,"createdAt":_createdAt }`);
 }
 
 // 카테고리가 전달 되었다면 카테고리에 있는 포스트를, 없다면 모든 포스트를 가져오기

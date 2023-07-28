@@ -12,12 +12,11 @@ function ViewPost({ id }: Props) {
     `/api/post/${id}`
   );
 
-  console.log(post);
   return (
-    <div className="px-6 py-8 bg-white h-[100vh]">
+    <div className="px-6 py-8 bg-white h-min-[100vh] h-full">
       {post && (
         <>
-          <PostContents post={post} />
+          <PostContents post={post} isLoading={isLoading} />
           <PostComments authorId={post.author.id} postId={id} />
         </>
       )}

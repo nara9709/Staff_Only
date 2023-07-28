@@ -5,16 +5,17 @@ import { AiOutlineComment } from 'react-icons/ai';
 type Props = {
   size: 'sm' | 'xl';
   onClick: (showCommentForm: boolean) => void;
+  text: string;
 };
 
-export default function CommentButton({ size, onClick }: Props) {
+export default function CommentButton({ size, onClick,text }: Props) {
   return (
     <IconButton onClick={() => onClick(true)}>
       <span
         className={` text-${size} text-blue-900 font-semibold flex items-center`}
       >
         {' '}
-        <AiOutlineComment className="mr-1" /> 댓글달기
+        <AiOutlineComment className="mr-1" /> {text}
       </span>
     </IconButton>
   );

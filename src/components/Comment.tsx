@@ -1,10 +1,13 @@
 import { DefaultComment, DefaultSubComment } from '@/model/post';
-import React, { FormEvent, useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import useMe from '@/hooks/useMe';
 import Avatar from './UI/Avatar';
 import CommentButton from './UI/CommentButton';
 import CommentForm from './CommentForm';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { useSWRConfig } from 'swr';
+import { useRouter } from 'next/navigation';
+import { ThreeDots } from 'react-loader-spinner';
 
 type Props = {
   fullComment: DefaultComment | DefaultSubComment;
@@ -18,9 +21,16 @@ function Comment({ fullComment, commentType, postId }: Props) {
 
   const { user } = useMe();
   const userId = user?.id;
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [isFetching, setIsFetching] = useState(false);
+  const isUpdating = isPending || isFetching;
+
+  const { mutate: globalMutate } = useSWRConfig();
 
   // 대댓글 업로드
   const uploadSubComment = (comment: string) => {
+    setIsFetching(true);
     fetch('http://localhost:3000/api/uploadComment', {
       method: 'POST',
       body: JSON.stringify({
@@ -31,11 +41,19 @@ function Comment({ fullComment, commentType, postId }: Props) {
         commentType: 'subComment',
         postId,
       }),
-    });
+    })
+      .then(() => globalMutate('/api/posts'))
+      .then(() => {
+        startTransition(() => {
+          router.refresh();
+        });
+      })
+      .then(() => setIsFetching(() => false));
   };
 
   // 댓글 삭제
   const deleteComment = () => {
+    setIsFetching(true);
     fetch('http://localhost:3000/api/delComment', {
       method: 'PUT',
       body: JSON.stringify({
@@ -43,7 +61,14 @@ function Comment({ fullComment, commentType, postId }: Props) {
         commentId: id,
         commentType,
       }),
-    });
+    })
+      .then(() => globalMutate('/api/posts'))
+      .then(() => {
+        startTransition(() => {
+          router.refresh();
+        });
+      })
+      .then(() => setIsFetching(() => false));
   };
 
   return (
@@ -77,9 +102,24 @@ function Comment({ fullComment, commentType, postId }: Props) {
           {commentType === 'comment' ? comment : subComment}
         </p>
         {commentType === 'comment' && (
-          <CommentButton size="sm" onClick={setShowCommentForm} />
+          <CommentButton
+            size="sm"
+            onClick={setShowCommentForm}
+            text="답글달기"
+          />
         )}
       </div>
+      {isUpdating && (
+        <div className="flex justify-center items-center">
+          <ThreeDots
+            height="80"
+            width="80"
+            radius="9"
+            color="#176B87"
+            visible={true}
+          />
+        </div>
+      )}
       {showCommentForm && (
         <CommentForm
           toggleShow={setShowCommentForm}
