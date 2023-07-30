@@ -36,6 +36,7 @@ function PostContents({ post, isLoading }: Props) {
       </div>
       <div className=" border-t-[0.5px] border-t-stone-300 pt-4 min-h-[150px]">
         <p className=" text-lg">{content}</p>
+        
       </div>
     </>
   );

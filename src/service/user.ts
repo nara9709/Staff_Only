@@ -30,6 +30,7 @@ export async function getUserByEmail(email: string) {
     client
       .fetch(
         `*[_type == "user" && email == "${email}"][0]{
+    calendar,
     name,
     username,
     "id":_id,

@@ -2,17 +2,25 @@
 
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { BiSolidCloudUpload } from 'react-icons/bi';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import useMe from '@/hooks/useMe';
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ProgressBar } from 'react-loader-spinner';
 
 function NewPostForm() {
   const { user } = useMe();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
   const [category, setCategory] = useState('');
-  const [subject, setSubject] = useState('');
-  const [content, setContent] = useState('');
+  const subjectRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File>();
+
+  const router = useRouter();
+
+  console.log(category);
 
   const categories = [
     '카페',
@@ -32,16 +40,61 @@ function NewPostForm() {
 
     if (files && files[0]) {
       setFile(files[0]);
-      console.log(files[0]);
     }
+  };
+
+  // 사용자가 게시글을 업로드하면 포스트 업로드 api요청
+  const handdleSubmit = (e: FormEvent) => {
+    setLoading(true);
+
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('subject', subjectRef.current?.value ?? '');
+    formData.append('content', contentRef.current?.value ?? '');
+    formData.append('userId', user?.id ?? '');
+    formData.append('category', category ?? '');
+
+    if (file) {
+      formData.append('file', file);
+    }
+
+    fetch('/api/posts', { method: 'POST', body: formData })
+      .then((res) => {
+        if (!res.ok) {
+          setError(`${res.status} ${res.statusText}`);
+          return;
+        }
+        router.push('/');
+      })
+      .catch((err) => setError(err.toString()))
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className="h-full h-min-[100vh]">
-      <form className="flex flex-col p-3">
+      {loading && (
+        <div className="flex justify-center w-full h-[100vh] bg-[#176B87]/30 absolute pt-48 z-50">
+          <ProgressBar
+            height="80"
+            width="80"
+            ariaLabel="progress-bar-loading"
+            wrapperClass="progress-bar-wrapper"
+            borderColor="#0C3543"
+            barColor="#176B87"
+          />
+        </div>
+      )}
+      {error && (
+        <p className="w-full bg-red-100 text-red-600 text-center p-4 mb-4 font-bold">
+          {error}
+        </p>
+      )}
+      <form className="flex flex-col p-3" onSubmit={handdleSubmit}>
         <FormControl className="w-1/2">
           <InputLabel id="select-label">카테고리</InputLabel>
           <Select
+            required
             labelId="select-label"
             label="카테고리"
             value={category}
@@ -59,18 +112,17 @@ function NewPostForm() {
           id="input-subject"
           type="text"
           placeholder="제목을 입력해주세요 (최대 30자)"
-          value={subject}
+          ref={subjectRef}
           required
           maxLength={30}
-          onChange={(e) => setSubject(e.target.value)}
           className=" p-2 text-lg border-b border-[#176B87] mt-4 focus:outline-none"
         />
         <textarea
           name="content"
           id="input-content"
           rows={10}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          minLength={5}
+          ref={contentRef}
           className="border border-[#176B87] p-4 text-[1.1em] mt-4 focus:outline-none"
         />
 

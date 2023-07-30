@@ -6,28 +6,78 @@ import 'react-calendar/dist/Calendar.css';
 import { createPortal } from 'react-dom';
 import { AiOutlinePlus } from 'react-icons/ai';
 import CalendarModal from './CalendarModal';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import moment from 'moment';
 import CalendarCalInfo from './CalendarCalInfo';
 import { DefaultCalendar } from '@/model/calendar';
 import { Fade } from '@mui/material';
+import useMe from '@/hooks/useMe';
+import { useRouter } from 'next/navigation';
 
 type ValuePiece = Date | null | string;
 export type DayValue = ValuePiece | [ValuePiece, ValuePiece];
 
 function Calendars() {
   const [showModal, setShowModal] = useState(false);
-  const [DayValue, onChange] = useState<DayValue>(new Date().toISOString());
-
-  const { data } = useSWR<DefaultCalendar>('/api/allDate');
+  const [dayValue, onChange] = useState<DayValue>(new Date().toISOString());
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>();
+  const { data, mutate } = useSWR<DefaultCalendar>('/api/allDate');
   const days = data?.days ? data.days.map((day) => day.fullDate) : [];
+
+  const { user } = useMe();
+  const { mutate: globalMutate } = useSWRConfig();
+  const router = useRouter();
+
+  // 새로운 근무시간 업로드
+  const handdleSubmit = (
+    startTime: string,
+    endTime: string,
+    workingHour: number
+  ) => {
+    setIsLoading(true);
+
+    // 날짜 포맷 변경
+
+    if (!dayValue) {
+      return new Error('날짜를 선택해주세요');
+    }
+
+    const rawDay = dayValue?.toString().split('00');
+
+    const editedDay = new Date(rawDay[0]).toISOString();
+
+    const day = editedDay.split('T')[0];
+
+    fetch('/api/calendar', {
+      method: 'POST',
+      body: JSON.stringify({
+        day,
+        startTime,
+        endTime,
+        workingHour,
+        userId: user?.id,
+        calendarId: user?.calendar,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          setError(`${res.status} ${res.statusText}`);
+          return;
+        }
+        globalMutate('/api/allDate');
+      })
+      .then(() => router.refresh())
+      .then(() => setShowModal(false))
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <>
       <div className="w-full h-[600px] ">
         <Calendar
           onChange={onChange}
-          value={DayValue}
+          value={dayValue}
           onClickDay={() => console.log('click!')}
           tileContent={
             data &&
@@ -66,7 +116,10 @@ function Calendars() {
       {showModal &&
         typeof window === 'object' &&
         createPortal(
-          <CalendarModal date={DayValue} onClose={() => setShowModal(false)} />,
+          <CalendarModal
+            onSubmit={handdleSubmit}
+            onClose={() => setShowModal(false)}
+          />,
           document.getElementById('portal')!
         )}
     </>

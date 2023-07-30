@@ -1,5 +1,6 @@
+import { comment } from 'postcss';
 import { PreviewPost } from '@/model/post';
-import { client, urlFor } from './sanity';
+import { assetsURL, client, urlFor } from './sanity';
 
 // 인기글 포스트 가져오기
 export async function getPopularPosts() {
@@ -14,7 +15,7 @@ export async function getPopularPosts() {
 // 카테고리가 전달 되었다면 카테고리에 있는 포스트를, 없다면 모든 포스트를 가져오기
 export async function getPostsByCategory(page: string, category?: string) {
   const query = category
-    ? `*[_type == "post" && category->category == "${category}"]`
+    ? `*[_type == "post" && category == "${category}"]`
     : `*[_type == "post"]`;
   return client.fetch(`${query} | order(_createdAt desc)[${
     Number(page) === 0 ? page : Number(page) + 9
@@ -22,12 +23,12 @@ export async function getPostsByCategory(page: string, category?: string) {
     subject,
     content,
     viewCount,
-    "category":category->category,
+    image,
+    category,
     "id":_id,
     "comments":count(comments),
     "createdAt":_createdAt,
     "author": {"username":author->username, "image":author->userProfileImage}
-
   }`);
 }
 
@@ -121,4 +122,62 @@ export async function deleteComment(
       `${commentType === 'comment' ? toRemoveComment : toRemoveSubComment}`,
     ])
     .commit();
+}
+
+// 새로운 포스트 업로드
+export async function createPost(
+  userId: string,
+  content: string,
+  subject: string,
+  category: string,
+  file?: Blob
+) {
+  console.log(userId, subject, content, file, category);
+
+  console.log(process.env.SANITY_TOKEN);
+
+  if (file) {
+    return fetch(assetsURL, {
+      method: 'POST',
+      headers: {
+        'content-type': file.type,
+        authorization: `Bearer ${process.env.SANITY_TOKEN}`,
+      },
+      body: file,
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        return client.create(
+          {
+            _type: 'post',
+            subject,
+            content,
+            category,
+            viewCount: 0,
+            author: { _ref: userId },
+            image: { asset: { _ref: result.document._id } },
+            comments: [],
+            subComments: [],
+          },
+          { autoGenerateArrayKeys: true }
+        );
+      })
+      .catch((err) => console.log(err));
+  } else {
+    return client.create(
+      {
+        _type: 'post',
+        subject,
+        content,
+        category,
+        viewCount: 0,
+        author: { _ref: userId },
+        comments: [],
+        subComments: [],
+      },
+      { autoGenerateArrayKeys: true }
+    );
+  }
 }

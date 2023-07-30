@@ -19,7 +19,7 @@ async function NewPostPage() {
   }
 
   return (
-    <section className="bg-white h-100vh">
+    <section className="bg-white min-h-[100vh] h-full">
       <NewPostForm />
     </section>
   );

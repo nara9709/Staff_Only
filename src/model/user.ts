@@ -1,3 +1,4 @@
+import { Calendar } from 'react-calendar';
 export type DefaultUserInfo = {
   name: string;
   email: string;

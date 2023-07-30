@@ -6,15 +6,15 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { IconButton } from '@mui/material';
 
 type Props = {
-  date: DayValue;
   onClose: () => void;
+  onSubmit: (startTime: string, endTime: string, workingHour: number) => void;
 };
 
-function CalendarModal({ date, onClose }: Props) {
+function CalendarModal({ onSubmit, onClose }: Props) {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const iconStyle = 'w-8 h-8 md:w-10 md:h-10';
+  const iconStyle = 'w-9 h-9 md:w-10 md:h-10';
 
   // 출근시간과 퇴근시간을 이용해서 근무시간 계산하기
   const calTotalWorkingHours = () => {
@@ -25,12 +25,11 @@ function CalendarModal({ date, onClose }: Props) {
 
     const result = endTotalMin - startTotalMin;
     const hour = Math.trunc(result / 60);
-    const min = result - hour * 60;
+    const min = Number(((result - hour * 60) / 60).toFixed(1));
 
-    return {
-      hour,
-      min,
-    };
+    const workingHour = hour + min;
+
+    return onSubmit(startTime, endTime, workingHour);
   };
 
   const splitTimeValue = (timeValue: string): string[] => {
@@ -46,7 +45,7 @@ function CalendarModal({ date, onClose }: Props) {
       </span>
 
       <form className="flex flex-col pt-8 px-8 pb-4">
-        <label className="mb-1">출근시간</label>
+        <label className="mb-2">출근시간</label>
         <input
           type="time"
           id="startTime"
@@ -54,7 +53,7 @@ function CalendarModal({ date, onClose }: Props) {
           value={startTime}
           className=" rounded-md p-[0.3rem] mb-2"
         />
-        <label className="mb-1">퇴근시간</label>
+        <label className="mb-2">퇴근시간</label>
         <input
           type="time"
           id="endTime"
