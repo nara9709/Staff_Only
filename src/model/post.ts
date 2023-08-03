@@ -34,7 +34,6 @@ export type DefaultSubComment = {
     id: string;
   };
   id: string;
-  x;
   subcomment: string;
 };
 

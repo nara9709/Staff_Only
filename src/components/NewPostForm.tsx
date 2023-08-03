@@ -8,7 +8,6 @@ import useMe from '@/hooks/useMe';
 import { useRouter } from 'next/navigation';
 import { ProgressBar } from 'react-loader-spinner';
 import { useSWRConfig } from 'swr';
-import { usePosts } from '@/hooks/usePosts';
 
 function NewPostForm() {
   const { user } = useMe();
@@ -32,8 +31,6 @@ function NewPostForm() {
     '드럭스토어',
   ];
 
-  const { uploadPost } = usePosts('', 0);
-
   // 사용자가 게시글을 업로드하면 포스트 업로드 api요청
   const handdleSubmit = (e: FormEvent) => {
     setLoading(true);
@@ -47,10 +44,6 @@ function NewPostForm() {
     formData.append('content', contentRef.current?.value ?? '');
     formData.append('userId', user.id ?? '');
     formData.append('category', category ?? '');
-
-    // uploadPost(formData, user);
-
-    // router.push('/');
 
     fetch('/api/posts', { method: 'POST', body: formData })
       .then((res) => {
