@@ -2,17 +2,14 @@ import { client } from './sanity';
 import { getUserByEmail } from './user';
 import { DefaultUserInfo } from '@/model/user';
 
+// 근무시간 데이터 가져오기
 export async function getDataContainedDate(userEmail: string) {
   return client.fetch(
     `*[_type == "calendars" && author->email == "${userEmail}"][0]`
   );
 }
 
-//TODO
-// 1.유저 정보를 가져와서 유저정보에 캘린더 아이디가 들어가 있는지 확인
-//2.캘린더 정보가 없다면 캘린더를 만들어서 해당 아이디를 유저의 캘린더 아이디에 넣어준다.
-//3.캘린더 정보가 있다면 해당 캘린더 내용만 업데이트 해줌
-
+// 근무시간 추가하기
 export async function addWorkingDay(
   workingHour: number,
   startTime: string,
@@ -35,5 +32,10 @@ export async function addWorkingDay(
         },
       ])
       .commit({ autoGenerateArrayKeys: true });
+  } else {
+    // TODO
+    // 1. create 사용해서 새로운 캘린더 생성, 생성하면서 근무 시간 추가해주기
+    // 2. 해당 캘린더 author의 ref로 userId 넣어주기
+    //3. 캘린더의 author가 해당 userId인 캘린더의 id를 가져와서 user의 calendar ref로 해당 calendar id 넣어주기
   }
 }

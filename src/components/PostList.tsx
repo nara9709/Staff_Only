@@ -8,6 +8,7 @@ import PostCard from './PostCard';
 import { GrLinkNext, GrLinkPrevious } from 'react-icons/gr';
 import { Drawer, IconButton, Skeleton } from '@mui/material';
 import useMe from '@/hooks/useMe';
+import { usePosts } from '@/hooks/usePosts';
 
 function PostList() {
   const [pageNum, setPageNum] = useState(0);
@@ -24,31 +25,30 @@ function PostList() {
     '식당',
     '드럭스토어',
   ];
-  const { data: posts, isLoading } = useSWR<PreviewPost[]>(() => [
-    category !== ''
-      ? `/api/posts/${category}/${pageNum}`
-      : `/api/posts/${pageNum}`,
-  ]);
+
+  const { posts, isLoading } = usePosts(category, pageNum);
   const { user } = useMe();
 
   const iconStyle = ' w-7 h-7 md:w-8 md:h-8';
 
+  console.log(posts);
+
   return (
     <div>
       <button
-        className="p-2 mt-3 ml-3 rounded-lg font-semibold bg-blue-950 text-white text-lg"
+        className="p-2 mt-3 ml-3 rounded-lg font-semibold bg-[#176B87] text-white text-lg"
         onClick={() => setShowCategory(true)}
       >
         카테고리
       </button>
       {category !== '' && (
-        <span className="text-sm text-stone-600">
+        <span className="text-sm  text-[#176B87]">
           {' > '}
           {category}
         </span>
       )}
       <Drawer open={showCategory} onClose={() => setShowCategory(false)}>
-        <ul className="flex flex-col gap-4 items-center m-auto text-lg p-4 text-blue-950 font-semibold">
+        <ul className="flex flex-col gap-4 items-center m-auto text-lg p-4 font-thin">
           {categories.map((category, index) => {
             return (
               <li

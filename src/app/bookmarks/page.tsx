@@ -1,7 +1,7 @@
 import React from 'react';
 
-function SearchPage() {
+function BookmarksPage() {
   return <div>search</div>;
 }
 
-export default SearchPage;
+export default BookmarksPage;

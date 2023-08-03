@@ -20,20 +20,20 @@ function FooterNav() {
     {
       title: '휴게실',
       icon: <AiOutlineHome className={iconStyle} />,
-      clickedIcon: <AiFillHome className={iconStyle} />,
+      clickedIcon: <AiFillHome fill="#176B87" className={iconStyle} />,
       href: '/',
     },
     {
       title: '알바달력',
       icon: <BsCalendarWeek className={iconStyle} />,
-      clickedIcon: <BsCalendarWeekFill className={iconStyle} />,
+      clickedIcon: <BsCalendarWeekFill fill="#176B87" className={iconStyle} />,
       href: '/calendar',
     },
     {
-      title: '구인검색',
+      title: '북마크',
       icon: <RiSearch2Line className={iconStyle} />,
-      clickedIcon: <RiSearch2Fill className={iconStyle} />,
-      href: '/search',
+      clickedIcon: <RiSearch2Fill fill="#176B87" className={iconStyle} />,
+      href: '/bookmarks',
     },
   ];
 
@@ -49,7 +49,7 @@ function FooterNav() {
           </Link>
         ))}
 
-        {/* 로그인한 유저가 있다면 유저 아바타를, 없다면 로그인 아이콘을 보여준다. */}
+        {/* 로그인한 유저가 있다면 유저 아바타를, 없다면 로그인 아이콘을 보여줌 */}
         {session?.user ? (
           <Link href={'/profile'}>
             <li>

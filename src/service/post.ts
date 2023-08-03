@@ -32,6 +32,7 @@ export async function getPostsByCategory(page: string, category?: string) {
   }`);
 }
 
+// 포스트 아이디로 포스트 정보 가져오기
 export async function getPostByPostId(postId: string) {
   return client.fetch(`*[_type == "post" && _id == "${postId}"][0]{
     subject,
@@ -42,7 +43,7 @@ export async function getPostByPostId(postId: string) {
     "image":image,
     "comments":count(comments)+count(subComments),
     "createdAt":_createdAt,
-    "author": {"username":author->username, "image":author->userProfileImage, "id":_id},
+    "author": {"username":author->username, "image":author->userProfileImage, "id":author->_id},
   }`);
 }
 
@@ -129,55 +130,24 @@ export async function createPost(
   userId: string,
   content: string,
   subject: string,
-  category: string,
-  file?: Blob
+  category: string
 ) {
-  console.log(userId, subject, content, file, category);
+  return client.create(
+    {
+      _type: 'post',
+      subject,
+      content,
+      category,
+      viewCount: 0,
+      author: { _ref: userId },
+      comments: [],
+      subComments: [],
+    },
+    { autoGenerateArrayKeys: true }
+  );
+}
 
-  console.log(process.env.SANITY_TOKEN);
-
-  if (file) {
-    return fetch(assetsURL, {
-      method: 'POST',
-      headers: {
-        'content-type': file.type,
-        authorization: `Bearer ${process.env.SANITY_TOKEN}`,
-      },
-      body: file,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((result) => {
-        return client.create(
-          {
-            _type: 'post',
-            subject,
-            content,
-            category,
-            viewCount: 0,
-            author: { _ref: userId },
-            image: { asset: { _ref: result.document._id } },
-            comments: [],
-            subComments: [],
-          },
-          { autoGenerateArrayKeys: true }
-        );
-      })
-      .catch((err) => console.log(err));
-  } else {
-    return client.create(
-      {
-        _type: 'post',
-        subject,
-        content,
-        category,
-        viewCount: 0,
-        author: { _ref: userId },
-        comments: [],
-        subComments: [],
-      },
-      { autoGenerateArrayKeys: true }
-    );
-  }
+// 포스트 삭제하기
+export async function deletePost(postId: string) {
+  return client.delete(postId);
 }

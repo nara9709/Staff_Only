@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.className}>
-      <body className="bg-gray-100">
+      <body className="bg-gray-100 max-w-7xl m-auto">
         <AuthContext>
           <header>
             <Header />

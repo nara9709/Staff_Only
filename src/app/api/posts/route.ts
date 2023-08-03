@@ -16,13 +16,12 @@ export async function POST(req: NextRequest) {
   const content = form.get('content')?.toString();
   const subject = form.get('subject')?.toString();
   const category = form.get('category')?.toString();
-  const file = form.get('file') as Blob;
   const userId = form.get('userId')?.toString() ?? '';
 
   if (!content || !subject || !category) {
     return new Response('Bad Request', { status: 400 });
   }
-  return await createPost(userId, content, subject, category, file).then(
-    (data) => NextResponse.json(data)
+  return await createPost(userId, content, subject, category).then((data) =>
+    NextResponse.json(data)
   );
 }

@@ -19,7 +19,7 @@ export type DefaultPost = {
 };
 
 export type PreviewPost = Omit<DefaultPost, 'image'> & {
-  comments: number;
+  comments?: number;
 };
 
 export type DefaultSubComment = {
@@ -34,6 +34,7 @@ export type DefaultSubComment = {
     id: string;
   };
   id: string;
+  x;
   subcomment: string;
 };
 

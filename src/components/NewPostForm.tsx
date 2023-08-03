@@ -2,12 +2,13 @@
 
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { BiSolidCloudUpload } from 'react-icons/bi';
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import useMe from '@/hooks/useMe';
-import { MdAddPhotoAlternate } from 'react-icons/md';
-import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 import { ProgressBar } from 'react-loader-spinner';
+import { useSWRConfig } from 'swr';
+import { usePosts } from '@/hooks/usePosts';
 
 function NewPostForm() {
   const { user } = useMe();
@@ -16,11 +17,9 @@ function NewPostForm() {
   const [category, setCategory] = useState('');
   const subjectRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [file, setFile] = useState<File>();
 
   const router = useRouter();
-
-  console.log(category);
+  const { mutate: globalMutate } = useSWRConfig();
 
   const categories = [
     '카페',
@@ -33,31 +32,25 @@ function NewPostForm() {
     '드럭스토어',
   ];
 
-  // 사용자가 사진을 선택하면 상태 업데이트
-  const handdleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const files = e.target.files;
-
-    if (files && files[0]) {
-      setFile(files[0]);
-    }
-  };
+  const { uploadPost } = usePosts('', 0);
 
   // 사용자가 게시글을 업로드하면 포스트 업로드 api요청
   const handdleSubmit = (e: FormEvent) => {
     setLoading(true);
+
+    if (!user) return;
 
     e.preventDefault();
 
     const formData = new FormData();
     formData.append('subject', subjectRef.current?.value ?? '');
     formData.append('content', contentRef.current?.value ?? '');
-    formData.append('userId', user?.id ?? '');
+    formData.append('userId', user.id ?? '');
     formData.append('category', category ?? '');
 
-    if (file) {
-      formData.append('file', file);
-    }
+    // uploadPost(formData, user);
+
+    // router.push('/');
 
     fetch('/api/posts', { method: 'POST', body: formData })
       .then((res) => {
@@ -65,8 +58,10 @@ function NewPostForm() {
           setError(`${res.status} ${res.statusText}`);
           return;
         }
+        globalMutate('/api/posts/');
         router.push('/');
       })
+      .then(() => router.push('/'))
       .catch((err) => setError(err.toString()))
       .finally(() => setLoading(false));
   };
@@ -125,32 +120,6 @@ function NewPostForm() {
           ref={contentRef}
           className="border border-[#176B87] p-4 text-[1.1em] mt-4 focus:outline-none"
         />
-
-        {file && (
-          <div className="relative w-full h-64 aspect-squre mt-5">
-            <Image
-              className="object-cover"
-              fill
-              src={URL.createObjectURL(file)}
-              alt="local file"
-            />
-          </div>
-        )}
-
-        <input
-          className="hidden"
-          name="input"
-          id="input-upload"
-          type="file"
-          accept="image/*"
-          onChange={(e) => handdleChange(e)}
-        ></input>
-        <label
-          htmlFor="input-upload"
-          className="w-full flex justify-center pt-4"
-        >
-          <MdAddPhotoAlternate className="w-16 h-16" fill="#176B87" />
-        </label>
 
         <button
           className="flex items-center justify-center text-lg font-semibold text-white
