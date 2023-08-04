@@ -1,4 +1,4 @@
-import { getUserByEmail } from '@/service/user';
+import { getUserByEmail, updateProfile } from '@/service/user';
 import { authOptions } from '@/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
@@ -12,4 +12,11 @@ export async function GET(_: NextRequest) {
   }
   return getUserByEmail(user.email) //
     .then((data) => NextResponse.json(data));
+}
+export async function PUT(req: NextRequest) {
+  const { username, wage, userId } = await req.json();
+
+  return updateProfile(username, wage, userId).then((data) =>
+    NextResponse.json(data)
+  );
 }

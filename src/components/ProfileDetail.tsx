@@ -8,7 +8,7 @@ import { BiSave } from 'react-icons/bi';
 import { IconButton } from '@mui/material';
 
 function ProfileDetail() {
-  const { user } = useMe();
+  const { user, setProfile } = useMe();
 
   if (!user) {
     redirect('/login');
@@ -16,21 +16,12 @@ function ProfileDetail() {
 
   const [username, setUsername] = useState(user.username);
   const [wagePerHour, setWage] = useState(user.wagePerHour);
-  const [userProfileimage, setImage] = useState<File>();
 
   //   프로필 정보 업데이트 해주기
   const updateProfile = (e: FormEvent) => {
     e.preventDefault();
-    const formData = new FormData();
-    if (userProfileimage) {
-      formData.append('file', userProfileimage);
-    }
-    formData.append('username', username);
-    formData.append('wagePerHour', `${wagePerHour}`);
 
-    // TODO
-    // 1.api route 만들기 fetch 진행
-    // 2.mutate 진행 후 refresh 진행
+    setProfile(username, wagePerHour);
   };
 
   return (

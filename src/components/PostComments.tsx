@@ -3,8 +3,8 @@ import {
   DefaultComment,
   DefaultSubComment,
 } from '@/model/post';
-import React, {  useState, useTransition } from 'react';
-import useSWR, {  useSWRConfig } from 'swr';
+import React, { useState, useTransition } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import { IconButton } from '@mui/material';
@@ -58,7 +58,6 @@ function PostComments({ authorId, postId }: Props) {
   };
   return (
     <>
-      
       <div>
         <p className="mb-10">
           스태프 친구들의 댓글{' '}
@@ -69,17 +68,17 @@ function PostComments({ authorId, postId }: Props) {
         </p>
 
         {isUpdating ||
-        (isLoading && (
-          <div className="m-auto">
-            <ThreeDots
-              height="80"
-              width="80"
-              radius="9"
-              color="#176B87"
-              visible={true}
-            />
-          </div>
-        ))}
+          (isLoading && (
+            <div className="m-auto flex justify-center items-center">
+              <ThreeDots
+                height="80"
+                width="80"
+                radius="9"
+                color="#176B87"
+                visible={true}
+              />
+            </div>
+          ))}
 
         <ul>
           {comments &&
@@ -114,7 +113,7 @@ function PostComments({ authorId, postId }: Props) {
         </ul>
         <div className="flex justify-center">
           <CommentButton
-            size="xl"
+            size="lg"
             onClick={setShowCommentForm}
             text="댓글달기"
           />

@@ -72,3 +72,20 @@ export async function unbookmarkPost(postId: string, userId: string) {
     .unset([`bookmarks[_ref=="${postId}"]`])
     .commit();
 }
+
+// 유저 프로필 정보 업데이트
+export async function updateProfile(
+  username: string,
+  wage: number,
+  userId: string
+) {
+  return client
+    .patch(userId)
+    .set({
+      username,
+    })
+    .set({
+      wagePerHour: wage,
+    })
+    .commit();
+}

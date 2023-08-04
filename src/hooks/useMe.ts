@@ -1,6 +1,6 @@
 import { DefaultUserInfo } from '@/model/user';
 import { useSession } from 'next-auth/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import useSWR from 'swr';
 
 async function updateBookmark(
@@ -14,6 +14,13 @@ async function updateBookmark(
   }).then((res) => res.json());
 }
 
+async function updateProfile(username: string, wage: number, userId: string) {
+  return fetch('/api/me', {
+    method: 'PUT',
+    body: JSON.stringify({ userId, username, wage }),
+  }).then((res) => res.json());
+}
+
 export default function useMe() {
   const { data: session } = useSession();
 
@@ -23,6 +30,21 @@ export default function useMe() {
     error,
     mutate,
   } = useSWR<DefaultUserInfo>(session ? '/api/me' : null);
+
+  const setProfile = (username: string, wage: number) => {
+    if (!user) return;
+
+    const newUser = {
+      ...user,
+      username: username,
+      wagePerHour: wage,
+    };
+
+    return mutate(updateProfile(username, wage, user.id), {
+      optimisticData: newUser,
+      rollbackOnError: true,
+    });
+  };
 
   const setBookmarks = useCallback(
     (postId: string, bookmark: boolean) => {
@@ -46,5 +68,5 @@ export default function useMe() {
     [user, mutate]
   );
 
-  return { user, isLoading, error, setBookmarks };
+  return { user, isLoading, error, setBookmarks, setProfile };
 }

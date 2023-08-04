@@ -3,12 +3,12 @@ import { IconButton } from '@mui/material';
 import { AiOutlineComment } from 'react-icons/ai';
 
 type Props = {
-  size: 'sm' | 'xl';
+  size: 'sm' | 'lg';
   onClick: (showCommentForm: boolean) => void;
   text: string;
 };
 
-export default function CommentButton({ size, onClick,text }: Props) {
+export default function CommentButton({ size, onClick, text }: Props) {
   return (
     <IconButton onClick={() => onClick(true)}>
       <span
