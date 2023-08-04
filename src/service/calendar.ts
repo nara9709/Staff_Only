@@ -18,6 +18,7 @@ export async function addWorkingDay(
   userId: string,
   calendarId?: string
 ) {
+  // 이미 유저 정보에 캘린더 정보가 있다면 근무시간만 추가
   if (calendarId) {
     return client
       .patch(calendarId)
@@ -33,9 +34,38 @@ export async function addWorkingDay(
       ])
       .commit({ autoGenerateArrayKeys: true });
   } else {
-    // TODO
-    // 1. create 사용해서 새로운 캘린더 생성, 생성하면서 근무 시간 추가해주기
-    // 2. 해당 캘린더 author의 ref로 userId 넣어주기
-    //3. 캘린더의 author가 해당 userId인 캘린더의 id를 가져와서 user의 calendar ref로 해당 calendar id 넣어주기
+    // 유저 정보에 캘린더 정보가 없다면 캘린더 생성 및 유저 정보에 캘린더 아이디 추가
+    client.create(
+      {
+        _type: 'calendars',
+        author: {
+          _ref: userId,
+        },
+        days: [
+          {
+            fullDate: day,
+            _type: 'day',
+            startTime,
+            endTime,
+            workingHour,
+          },
+        ],
+      },
+      { autoGenerateArrayKeys: true }
+    );
+
+    const calendarId = await client.fetch(
+      `*[_type == "calendars" && author._ref == "${userId}"][0]{"id":_id}`
+    );
+
+    return client
+      .patch(userId)
+      .append('calendar', [
+        {
+          _ref: calendarId,
+          _type: 'reference',
+        },
+      ])
+      .commit();
   }
 }

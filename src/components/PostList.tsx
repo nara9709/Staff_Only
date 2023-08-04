@@ -31,8 +31,6 @@ function PostList() {
 
   const iconStyle = ' w-7 h-7 md:w-8 md:h-8';
 
-  console.log(posts);
-
   return (
     <div>
       <button

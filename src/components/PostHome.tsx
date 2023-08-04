@@ -15,9 +15,6 @@ function PostHome() {
           <IconButton size="large" className="p-0">
             <TfiWrite className="w-6 h-6 md:w-10 md:h-10" fill="white" />
           </IconButton>
-          <span className="text-[0.5rem] text-white mt-1 md:text-sm">
-            글쓰기
-          </span>
         </div>
       </Link>
     </div>
