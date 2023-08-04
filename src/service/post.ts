@@ -151,3 +151,8 @@ export async function createPost(
 export async function deletePost(postId: string) {
   return client.delete(postId);
 }
+
+// 조회수 증가
+export async function incViewCount(postId: string) {
+  return client.patch(postId).inc({ viewCount: 1 }).commit();
+}

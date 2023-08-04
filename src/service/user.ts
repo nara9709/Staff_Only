@@ -20,7 +20,7 @@ export async function addUser({ id, email, image, name }: OAuthUser) {
       : 'https://res.cloudinary.com/nara9709/image/upload/v1689902323/default_user_image_raeiw6.png',
     email,
     bookmarks: [],
-    wagePerHour: 0,
+    wagePerHour: 9620,
   });
 }
 

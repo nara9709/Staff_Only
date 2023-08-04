@@ -52,6 +52,13 @@
   /* height: 100% !important; */
 }
 
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--rangeStar,
+.react-calendar__tile--rangeEnd,
+.treact-calendar__tile--active:enabled:focus {
+  background: #176b87;
+}
+
 .react-calendar__navigation__arrow {
   display: none !important;
 }

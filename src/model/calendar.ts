@@ -4,7 +4,7 @@ export type DefaultCalendar = {
 
 export type CalendarDetail = {
   key: string;
-  workingHours: number;
+  workingHour: number;
   fullDate: string;
   startTime: string;
   endTime: string;

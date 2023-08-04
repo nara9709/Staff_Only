@@ -1,6 +1,6 @@
 'use client';
 import { DefaultPost, PreviewPost } from '@/model/post';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSWR from 'swr';
 import PostContents from './PostContents';
 import PostComments from './PostComments';
@@ -11,6 +11,12 @@ function ViewPost({ id }: Props) {
   const { data: post, isLoading } = useSWR<PreviewPost & { image: string }>(
     `/api/post/${id}`
   );
+
+  useEffect(() => {
+    fetch(`/api/post/${id}`, {
+      method: 'PUT',
+    });
+  }, []);
 
   return (
     <div className="px-6 py-8 bg-white h-min-[100vh] h-full">

@@ -35,7 +35,7 @@ export async function addWorkingDay(
       .commit({ autoGenerateArrayKeys: true });
   } else {
     // 유저 정보에 캘린더 정보가 없다면 캘린더 생성 및 유저 정보에 캘린더 아이디 추가
-    client.create(
+    await client.create(
       {
         _type: 'calendars',
         author: {
@@ -60,12 +60,9 @@ export async function addWorkingDay(
 
     return client
       .patch(userId)
-      .append('calendar', [
-        {
-          _ref: calendarId,
-          _type: 'reference',
-        },
-      ])
+      .set({
+        calendar: { _ref: calendarId.id, _type: 'reference' },
+      })
       .commit();
   }
 }

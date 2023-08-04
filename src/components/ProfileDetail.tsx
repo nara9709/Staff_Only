@@ -8,31 +8,15 @@ import { BiSave } from 'react-icons/bi';
 import { IconButton } from '@mui/material';
 
 function ProfileDetail() {
-  //   const { user } = useMe();
+  const { user } = useMe();
 
-  const user: DefaultUserInfo = {
-    name: 'nara lee',
-    username: 'nara lee',
-    email: 'worldfk@gmai.com',
-    id: 'sfsfsf',
-    bookmarks: ['mark'],
-    userProfileImage: '/images/default_user_image.png',
-    wagePerHour: 3432,
-  };
+  if (!user) {
+    redirect('/login');
+  }
 
   const [username, setUsername] = useState(user.username);
   const [wagePerHour, setWage] = useState(user.wagePerHour);
   const [userProfileimage, setImage] = useState<File>();
-
-  // 사용자가 프로필 사진을 변경하면 상태 업데이트
-  const handdleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const files = e.target.files;
-
-    if (files && files[0]) {
-      setImage(files[0]);
-    }
-  };
 
   //   프로필 정보 업데이트 해주기
   const updateProfile = (e: FormEvent) => {

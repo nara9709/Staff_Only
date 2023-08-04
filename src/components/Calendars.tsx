@@ -37,7 +37,6 @@ function Calendars() {
     setIsLoading(true);
 
     // 날짜 포맷 변경
-
     if (!dayValue) {
       return new Error('날짜를 선택해주세요');
     }
@@ -102,7 +101,14 @@ function Calendars() {
             })
           }
         />
-        <ViewWorkingHour />
+        {data && user && (
+          <ViewWorkingHour days={data.days} wage={user.wagePerHour} />
+        )}
+        {!data && (
+          <p className="text-center mt-6">
+            이번달에 근무하신 기록이 없습니다😞
+          </p>
+        )}
 
         <div
           className=" bg-[#176B87] w-12 h-12 rounded-full flex items-center justify-center fixed right-2 bottom-24"
