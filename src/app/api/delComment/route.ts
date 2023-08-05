@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function PUT(req: NextRequest) {
   const { postId, commentId, commentType } = await req.json();
 
+  console.log(postId, commentId, commentType);
+
   if (!postId || !commentId || !commentType) {
     return new Response('Bad Request', { status: 400 });
   }

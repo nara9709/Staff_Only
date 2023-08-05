@@ -19,7 +19,7 @@ function ViewPost({ id }: Props) {
   }, []);
 
   return (
-    <div className="px-6 py-8 bg-white h-min-[100vh] h-full">
+    <div className="px-6 py-8 h-full">
       {post && (
         <>
           <PostContents post={post} isLoading={isLoading} />

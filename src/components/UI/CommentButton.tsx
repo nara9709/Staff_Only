@@ -10,13 +10,12 @@ type Props = {
 
 export default function CommentButton({ size, onClick, text }: Props) {
   return (
-    <IconButton onClick={() => onClick(true)}>
-      <span
-        className={` text-${size} text-blue-900 font-semibold flex items-center`}
-      >
-        {' '}
-        <AiOutlineComment className="mr-1" /> {text}
-      </span>
-    </IconButton>
+    <span
+      onClick={() => onClick(true)}
+      className={` text-${size} text-blue-900 hover:cursor-pointer hover:opacity-50 font-semibold flex items-center z-0`}
+    >
+      {' '}
+      <AiOutlineComment className="mr-1" /> {text}
+    </span>
   );
 }

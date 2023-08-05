@@ -1,3 +1,4 @@
+'use client';
 import { DefaultComment, DefaultSubComment } from '@/model/post';
 import React, { useState, useTransition } from 'react';
 import useMe from '@/hooks/useMe';
@@ -6,8 +7,8 @@ import CommentButton from './UI/CommentButton';
 import CommentForm from './CommentForm';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useSWRConfig } from 'swr';
+import { Comment as CommentSpinner } from 'react-loader-spinner';
 import { useRouter } from 'next/navigation';
-import { ThreeDots } from 'react-loader-spinner';
 
 type Props = {
   fullComment: DefaultComment | DefaultSubComment;
@@ -16,12 +17,14 @@ type Props = {
 };
 
 function Comment({ fullComment, commentType, postId }: Props) {
+  console.log(fullComment);
   const { comment, id, author, subComment, commentToUser }: any = fullComment;
   const [showCommentForm, setShowCommentForm] = useState(false);
 
   const { user } = useMe();
   const userId = user?.id;
   const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
   const isUpdating = isPending || isFetching;
@@ -42,7 +45,7 @@ function Comment({ fullComment, commentType, postId }: Props) {
         postId,
       }),
     })
-      .then(() => globalMutate('/api/posts'))
+      .then(() => globalMutate(`/api/post/${postId}`))
       .then(() => {
         startTransition(() => {
           router.refresh();
@@ -62,21 +65,32 @@ function Comment({ fullComment, commentType, postId }: Props) {
         commentType,
       }),
     })
-      .then(() => globalMutate('/api/posts'))
       .then(() => {
         startTransition(() => {
           router.refresh();
         });
       })
+      .then(() => globalMutate('/api/comments/'))
       .then(() => setIsFetching(() => false));
   };
 
   return (
     <div className="pt-2 pb-2 mb-2">
+      {isPending && (
+        <div className="m-auto flex justify-center items-center">
+          <CommentSpinner
+            height="80"
+            width="80"
+            backgroundColor="#176B87"
+            color="white"
+            visible={true}
+          />
+        </div>
+      )}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
           <Avatar
-            image={author.userProfileImage}
+            image={author.userProfileImage ?? author.image}
             name={author.username}
             size="sm"
           />
@@ -85,8 +99,8 @@ function Comment({ fullComment, commentType, postId }: Props) {
         {author.id === userId && (
           <AiOutlineDelete
             fill="red"
-            onClick={deleteComment}
-            className="hover:opacity-50 w-6 h-6"
+            onClick={() => deleteComment()}
+            className="hover:opacity-50 w-6 h-6 hover:cursor-pointer"
           />
         )}
       </div>
@@ -94,7 +108,7 @@ function Comment({ fullComment, commentType, postId }: Props) {
       <div className="flex items-center justify-between">
         <p className="pl-2">
           {commentType === 'subcomment' && (
-            <span className=" mr-2 font-semibold text-blue-900">
+            <span className=" mr-2 font-semibold  text-blue-900">
               {' '}
               @{commentType === 'subcomment' && commentToUser.username}
             </span>
@@ -111,10 +125,9 @@ function Comment({ fullComment, commentType, postId }: Props) {
       </div>
       {isUpdating && (
         <div className="flex justify-center items-center">
-          <ThreeDots
+          <CommentSpinner
             height="80"
             width="80"
-            radius="9"
             color="#176B87"
             visible={true}
           />

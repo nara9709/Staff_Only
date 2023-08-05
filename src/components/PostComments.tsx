@@ -1,3 +1,4 @@
+'use client';
 import {
   CommentFromSanity,
   DefaultComment,
@@ -7,12 +8,12 @@ import React, { useState, useTransition } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-import { IconButton } from '@mui/material';
 import useMe from '@/hooks/useMe';
 import { BsArrowReturnRight } from 'react-icons/bs';
 import CommentButton from './UI/CommentButton';
+
+import { Comment as CommentSpinner } from 'react-loader-spinner';
 import { useRouter } from 'next/navigation';
-import { ThreeDots } from 'react-loader-spinner';
 
 type Props = {
   authorId: string;
@@ -23,6 +24,7 @@ function PostComments({ authorId, postId }: Props) {
   const { data, isLoading } = useSWR<CommentFromSanity>(
     `/api/comments/${postId}`
   );
+
   const comments: DefaultComment[] | undefined = data?.comments;
   const subComments: DefaultSubComment[] | undefined = data?.subComments;
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -30,6 +32,7 @@ function PostComments({ authorId, postId }: Props) {
   const { user } = useMe();
   const userId = user?.id;
   const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
   const isUpdating = isPending || isFetching;
@@ -37,9 +40,9 @@ function PostComments({ authorId, postId }: Props) {
   const { mutate: globalMutate } = useSWRConfig();
 
   // 새로운 댓글 업로드
-  const uploadNewComment = async (comment: string) => {
+  const uploadNewComment = (comment: string) => {
     setIsFetching(true);
-    await fetch('http://localhost:3000/api/uploadComment', {
+    fetch('http://localhost:3000/api/uploadComment', {
       method: 'POST',
       body: JSON.stringify({
         newComment: comment,
@@ -48,13 +51,13 @@ function PostComments({ authorId, postId }: Props) {
         commentType: 'comment',
       }),
     })
-      .then(() => globalMutate('/api/posts')) //
+      .then(() => globalMutate(`/api/post/${postId}`)) //
+      .then(() => setIsFetching(() => false))
       .then(() => {
         startTransition(() => {
           router.refresh();
         });
-      })
-      .then(() => setIsFetching(() => false));
+      });
   };
   return (
     <>
@@ -68,13 +71,14 @@ function PostComments({ authorId, postId }: Props) {
         </p>
 
         {isUpdating ||
+          isFetching ||
           (isLoading && (
             <div className="m-auto flex justify-center items-center">
-              <ThreeDots
+              <CommentSpinner
                 height="80"
                 width="80"
-                radius="9"
-                color="#176B87"
+                backgroundColor="#176B87"
+                color="white"
                 visible={true}
               />
             </div>
@@ -102,6 +106,7 @@ function PostComments({ authorId, postId }: Props) {
                             <Comment
                               fullComment={subComment}
                               commentType="subcomment"
+                              postId={postId}
                             />
                           </li>
                         );

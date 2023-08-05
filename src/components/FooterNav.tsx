@@ -38,7 +38,7 @@ function FooterNav() {
   ];
 
   return (
-    <div className="fixed left-0 right-0 bottom-0 h-20 bg-white">
+    <div className="fixed left-0 right-0 bottom-0 h-20 bg-white z-10">
       <ul className="flex p-3 pl-6 pr-6 justify-between">
         {navMenus.map((nav, index) => (
           <Link href={nav.href} key={index}>

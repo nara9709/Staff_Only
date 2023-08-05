@@ -157,3 +157,23 @@ export async function deletePost(postId: string) {
 export async function incViewCount(postId: string) {
   return client.patch(postId).inc({ viewCount: 1 }).commit();
 }
+
+// 북마크된 포스트 정보 가져오기
+export async function getBookmarkedPosts(userId: string) {
+  return client.fetch(`
+  *[_type == "user" && _id == "${userId}"]{
+    "posts": bookmarks[]{ _type == 'reference' => @->}{
+      ...,
+        subject,
+    content,
+    viewCount,
+    image,
+    category,
+    "id":_id,
+    "comments":count(comments),
+    "createdAt":_createdAt,
+    "author": {"username":author->username, "image":author->userProfileImage}
+    }}[0].posts
+                                              
+                                              `);
+}

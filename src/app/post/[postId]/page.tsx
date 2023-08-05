@@ -10,7 +10,7 @@ type Props = {
 
 function PostPage({ params }: Props) {
   return (
-    <section>
+    <section className=" bg-white min-h-[100vh]">
       <ViewPost id={params.postId} />
     </section>
   );

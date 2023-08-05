@@ -15,16 +15,7 @@ type Props = {
 };
 
 function PostContents({ post, isLoading }: Props) {
-  const {
-    category,
-    author,
-    subject,
-    createdAt,
-    viewCount,
-    content,
-    image,
-    id,
-  } = post;
+  const { category, author, subject, createdAt, viewCount, content, id } = post;
 
   const router = useRouter();
   const { user } = useMe();
@@ -41,7 +32,11 @@ function PostContents({ post, isLoading }: Props) {
   return (
     <>
       <span>
-        <FcPrevious className="w-6 h-6 mb-2 " onClick={() => router.back()} />
+        <FcPrevious
+          className="w-6 h-6 mb-2 "
+          fill="gray"
+          onClick={() => router.back()}
+        />
       </span>
       <div className="pb-4 ">
         <div className="flex justify-between">

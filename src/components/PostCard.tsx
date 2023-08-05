@@ -9,13 +9,14 @@ import ToggleButton from './UI/ToggleButton';
 import Link from 'next/link';
 import useMe from '@/hooks/useMe';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   post: PreviewPost;
   userBookmarks?: string[];
 };
 
-function PostCard({ post, userBookmarks }: Props) {
+function PostCard({ post }: Props) {
   const {
     subject,
     author,
@@ -27,16 +28,18 @@ function PostCard({ post, userBookmarks }: Props) {
     id,
   } = post;
 
-  const liked = userBookmarks ? userBookmarks.includes(id) : false;
-
   const { data: session } = useSession();
   const user = session?.user;
+  const router = useRouter();
 
-  const { setBookmarks } = useMe();
+  const { setBookmarks, user: userData } = useMe();
+  const userBookmarks = userData?.bookmarks;
+
+  const liked = userBookmarks ? userBookmarks.includes(id) : false;
 
   const handdleLike = (like: boolean) => {
     if (!user) {
-      console.log('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
+      router.push('/login');
     } else {
       setBookmarks(id, like);
     }
@@ -65,7 +68,6 @@ function PostCard({ post, userBookmarks }: Props) {
         </div>
       </Link>
       <p className="flex justify-end items-center">
-        <button className="mr-2 font-bold text-gray-500">댓글달기</button>
         <span>
           <ToggleButton
             offIcon={<AiOutlineHeart className="w-7 h-7" />}
