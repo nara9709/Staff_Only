@@ -2,23 +2,16 @@ import { getPostsByCategory } from '@/service/post';
 import { NextRequest, NextResponse } from 'next/server';
 
 type Context = {
-  params: {
-    slug: string[];
-  };
+  params: string[];
 };
 
-type Categories =
-  | '카페'
-  | '배달전문'
-  | '프렌차이즈'
-  | '사무보조'
-  | '주점'
-  | '식당'
-  | '엔터테이먼트';
-
-export async function GET(_: NextRequest, context: Context) {
-  const [category, pageNum] = context.params.slug;
-
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { slug: string[] } }
+) {
+  const pageNum = params.slug[0];
+  const category = params.slug[1];
+  console.log(params);
   return getPostsByCategory(pageNum, category).then((data) =>
     NextResponse.json(data)
   );

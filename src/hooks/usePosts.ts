@@ -11,16 +11,12 @@ async function deletePost(id: string) {
   }).then((res) => res.json());
 }
 
-export function usePosts(category: string, pageNum: number) {
+export function usePosts(pageNum: number, category: string) {
   const {
     data: posts,
     isLoading,
     mutate,
-  } = useSWR<PreviewPost[]>(() => [
-    category !== ''
-      ? `/api/posts/${category}/${pageNum}`
-      : `/api/posts/${pageNum}`,
-  ]);
+  } = useSWR<PreviewPost[]>(() => `/api/posts/${pageNum}/${category}`);
 
   const delPost = useCallback(
     (id: string) => {

@@ -10,6 +10,8 @@ import { IconButton } from '@mui/material';
 function ProfileDetail() {
   const { user, setProfile } = useMe();
 
+  console.log(user);
+
   if (!user) {
     redirect('/login');
   }

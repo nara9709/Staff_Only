@@ -12,11 +12,12 @@ export async function getPopularPosts() {
   *[_type == "post" && _createdAt > "${sevenDaysAgo}" ] | order(viewCount desc)[0..2]{subject,"id": _id, "author": author->username,"createdAt":_createdAt }`);
 }
 
-// 카테고리가 전달 되었다면 카테고리에 있는 포스트를, 없다면 모든 포스트를 가져오기
+// 카테고리별로 포스트 가져오기
 export async function getPostsByCategory(page: string, category?: string) {
-  const query = category
-    ? `*[_type == "post" && category == "${category}"]`
-    : `*[_type == "post"]`;
+  const query =
+    category !== 'all'
+      ? `*[_type == "post" && category == "${category}"]`
+      : `*[_type == "post"]`;
   return client.fetch(`${query} | order(_createdAt desc)[${
     Number(page) === 0 ? page : Number(page) + 9
   }...${(Number(page) + 1) * 20}] {

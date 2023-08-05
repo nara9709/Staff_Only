@@ -12,7 +12,7 @@ import { usePosts } from '@/hooks/usePosts';
 
 function PostList() {
   const [pageNum, setPageNum] = useState(0);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('all');
   const [showCategory, setShowCategory] = useState(false);
   const categories = [
     '모두보기',
@@ -26,7 +26,8 @@ function PostList() {
     '드럭스토어',
   ];
 
-  const { posts, isLoading } = usePosts(category, pageNum);
+  const { posts, isLoading } = usePosts(pageNum, category);
+
   const { user } = useMe();
 
   const iconStyle = ' w-7 h-7 md:w-8 md:h-8';
@@ -39,7 +40,7 @@ function PostList() {
       >
         카테고리
       </button>
-      {category !== '' && (
+      {category !== 'all' && (
         <span className="text-sm  text-[#176B87]">
           {' > '}
           {category}
@@ -54,7 +55,7 @@ function PostList() {
                 className="hover:opacity-50 hover:cursor-pointer"
                 onClick={() => {
                   if (category === '모두보기') {
-                    setCategory('');
+                    setCategory('all');
                   } else {
                     setCategory(category);
                   }

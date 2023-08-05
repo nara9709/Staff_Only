@@ -53,7 +53,7 @@ function PostContents({ post, isLoading }: Props) {
           <span className="flex items-center ">
             <Avatar image={author.image} size="sm" name={author.username} />
             <span className="ml-2 text-stone-500">
-              {author.username} | {viewCount}
+              {author.username} | 조회수 {viewCount}
             </span>
           </span>
           {author.id === user?.id && (

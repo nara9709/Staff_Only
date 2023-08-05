@@ -31,20 +31,25 @@ export default function useMe() {
     mutate,
   } = useSWR<DefaultUserInfo>(session ? '/api/me' : null);
 
-  const setProfile = (username: string, wage: number) => {
-    if (!user) return;
+  const setProfile = useCallback(
+    (username: string, wage: number) => {
+      if (!user) return;
 
-    const newUser = {
-      ...user,
-      username: username,
-      wagePerHour: wage,
-    };
+      const newUser = {
+        ...user,
+        username: username,
+        wagePerHour: wage,
+      };
 
-    return mutate(updateProfile(username, wage, user.id), {
-      optimisticData: newUser,
-      rollbackOnError: true,
-    });
-  };
+      return mutate(updateProfile(username, wage, user.id), {
+        optimisticData: newUser,
+        rollbackOnError: true,
+        populateCache: false,
+        revalidate: false,
+      });
+    },
+    [user, mutate]
+  );
 
   const setBookmarks = useCallback(
     (postId: string, bookmark: boolean) => {
