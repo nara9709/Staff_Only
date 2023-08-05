@@ -29,7 +29,7 @@ function PostContents({ post, isLoading }: Props) {
   const router = useRouter();
   const { user } = useMe();
   const { mutate: globalMutate } = useSWRConfig();
-  const { delPost } = usePosts('', 0);
+  const { delPost } = usePosts(0, '');
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState();
 
