@@ -17,7 +17,6 @@ type Props = {
 };
 
 function Comment({ fullComment, commentType, postId }: Props) {
-  console.log(fullComment);
   const { comment, id, author, subComment, commentToUser }: any = fullComment;
   const [showCommentForm, setShowCommentForm] = useState(false);
 
