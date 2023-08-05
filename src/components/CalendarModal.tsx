@@ -35,7 +35,7 @@ function CalendarModal({ onSubmit, onClose }: Props) {
   };
 
   return (
-    <div className=" bg-[#176B87] w-full h-full fixed top-[60%] rounded-lg max-w-7xl m-auto">
+    <div className=" bg-[#176B87] w-full h-full fixed top-[50%] rounded-lg max-w-7xl m-auto p-2">
       <form className="flex flex-col pt-8 px-8 pb-4 relative">
         <span className=" absolute right-0 top-0">
           <IconButton>
@@ -52,7 +52,7 @@ function CalendarModal({ onSubmit, onClose }: Props) {
           id="startTime"
           onChange={(e) => setStartTime(e.target.value)}
           value={startTime}
-          className=" rounded-md p-[0.3rem] mb-2 focus:outline-none 
+          className=" rounded-md p-[0.3rem] mb-2 focus:outline-none w-full
            "
         />
         <label className="text-white mb-2 text-lg font-thin">퇴근시간</label>
@@ -61,7 +61,7 @@ function CalendarModal({ onSubmit, onClose }: Props) {
           id="endTime"
           onChange={(e) => setEndTime(e.target.value)}
           value={endTime}
-          className=" rounded-md p-[0.3rem] focus:outline-none "
+          className=" rounded-md p-[0.3rem] w-full focus:outline-none "
         />
         <span className="mt-2 text-center">
           <IconButton onClick={() => calTotalWorkingHours()}>

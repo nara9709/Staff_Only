@@ -7,6 +7,7 @@ import PostComments from './PostComments';
 type Props = {
   id: string;
 };
+
 function ViewPost({ id }: Props) {
   const { data: post, isLoading } = useSWR<PreviewPost & { image: string }>(
     `/api/post/${id}`

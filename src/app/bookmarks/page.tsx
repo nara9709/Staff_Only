@@ -1,5 +1,11 @@
 import BookmarkList from '@/components/BookmarkList';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: '북마크 포스트',
+  description: '당신의 북마크한 포스트들을 확인해보세요',
+};
 
 function BookmarksPage() {
   return (

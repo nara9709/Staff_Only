@@ -1,5 +1,11 @@
 import Calendars from '@/components/Calendars';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: '근무시간 계산 달력',
+  description: '근무시간 입력으로 이번달 월급을 확인해보세요',
+};
 
 async function CalendarPage() {
   return (
