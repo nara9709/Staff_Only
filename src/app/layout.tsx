@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     template: '알바러들을 위한 커뮤니티 사이트 | %s',
   },
   description: '알바생들을 위한 커뮤니티 사이트 | 알바달력',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.className}>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className="bg-gray-100  m-auto">
         <AuthContext>
           <header>
