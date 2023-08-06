@@ -1,34 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div style="text-align:center">
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691329744/staffonly_logo_readme_c39gcq.png" width="200px" height="200px" style="" title="Github_Logo"/>
+</div>
 
-## Getting Started
+# STAFF ONLY
 
-First, run the development server:
+<p>알바생들을 위한 커뮤니티 & 달력 서비스</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+> 개발기간
+> 2023.07.09 ~ 개발중
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 배포주소
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<a href="https://staff-only-rose.vercel.app/" > https://staff-only-rose.vercel.app/ </a>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 프로젝트 소개
 
-## Learn More
+<strong>⛔️사장님은 출입금지⛔️</strong> 알바생들끼리 통하는 무언가가 있다구요, 알바생들을 위한 우리들의 작은 휴게실 같은 커뮤니티 사이트 <strong>STAFF ONLY</strong> <br>
+<strong>최고의 복지는 월급💵 </strong> 근무시간을 적으면 이번달 월급까지 쉽게 확인할수있어요🤗
 
-To learn more about Next.js, take a look at the following resources:
+## 사용 기술
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<h3>Development</h3>
+<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/sanity-F03E2F?style=for-the-badge&logo=sanity&logoColor=white">
+<img src="https://img.shields.io/badge/swr-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img src="https://img.shields.io/badge/taillwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+<img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white">
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br>
 
-## Deploy on Vercel
+<h3>Config</h3>
+<img src="https://img.shields.io/badge/Npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
+<br>
+<h3>Deploy</h3>
+<img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+<br>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 페이지 구성
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<div style="display:flex flex-direction:column ">
+<div style="display:flex ">
+<div><img src="https://res.cloudinary.com/nara9709/image/upload/v1691331589/Screenshot_2023-08-06_at_8.17.39_AM_ee3lhe.png" / >
+<p style="text-align:center">기본 포스트 홈페이지</p></div>
+<div><img src="https://res.cloudinary.com/nara9709/image/upload/v1691331908/Screenshot_2023-08-06_at_8.25.02_AM_g1fwtb.png" / >
+<p style="text-align:center">포스트 디테일 페이지</p></div>
+</div>
+<div  style="display:flex"> 
+<div>
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691331589/Screenshot_2023-08-06_at_8.18.02_AM_i4mlnj.png" / >
+<p style="text-align:center">새로운 포스트 작성 페이지</p>
+</div>
+<div>
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691331589/Screenshot_2023-08-06_at_8.17.54_AM_avtryt.png" / >
+<p style="text-align:center">알바달력 페이지</p>
+</div>
+</div>
+<div  style="display:flex">
+<div> 
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691331589/Screenshot_2023-08-06_at_8.18.22_AM_keu1xe.png" / >
+<p style="text-align:center">북마크 리스트 페이지</p>
+</div>
+<div> 
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691331589/Screenshot_2023-08-06_at_8.18.28_AM_moo8dm.png" / >
+<p style="text-align:center">유저정보 페이지 </p>
+</div>
+</div>
+<br/>
+
+## 주요기능
+
+<strong>(모든 참고 코드는 src 하위 폴더 안에 있음)</strong>
+
+<h4>⭐️카테고리별 포스트 작성</h4>
+
+페이지 코드: component -> NewPostForm.tsx <br>
+서비스 코드: service -> post.ts / createPost
+
+<h4>⭐️댓글 및 대댓글 작성</h4>
+
+페이지 코드: component -> Comment.tsx & CommentForm.tsx <br>
+서비스 코드: service -> post.ts / addNewComment & addSubComment <br>
+
+<h4>⭐️해당월 근무시간에 따른 월급 계산</h4>
+
+페이지 코드: component -> Calendars.tsx & CalendarModal.tsx <br>
+서비스 코드: service -> calendar.ts / addWorkingDay <br>
+
+<h4>⭐️북마크 된 포스트 확인 가능</h4>
+
+페이지 코드: component -> BookmarkList.tsx <br>
+서비스 코드: service -> post.ts / getBookmarkedPosts <br>
+
+<h4>⭐️유저 프로필 정보 변경</h4>
+
+페이지 코드: component -> ProfileDetail.tsx <br>
+서비스 코드: service -> user.ts / updateProfile <br>
