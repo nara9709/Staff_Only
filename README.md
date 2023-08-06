@@ -1,4 +1,6 @@
-![](https://res.cloudinary.com/nara9709/image/upload/v1691329744/staffonly_logo_readme_c39gcq.png 'Github_Logo')
+<div align="center">
+<img src="https://res.cloudinary.com/nara9709/image/upload/v1691329744/staffonly_logo_readme_c39gcq.png" width="200px" height="200px" style="" title="Github_Logo"/>
+</div>
 
 # STAFF ONLY
 
