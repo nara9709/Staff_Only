@@ -39,6 +39,7 @@ function CommentForm({ toggleShow, commentTo, onSubmit }: Props) {
         value={newComment}
         placeholder="스태프님께 댓글을 달아주세요🤗"
         required
+        autoFocus
       />
       <button
         onClick={(e) => handdleSubmit(e)}

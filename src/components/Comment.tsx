@@ -33,7 +33,7 @@ function Comment({ fullComment, commentType, postId }: Props) {
   // 대댓글 업로드
   const uploadSubComment = (comment: string) => {
     setIsFetching(true);
-    fetch('http://localhost:3000/api/uploadComment', {
+    fetch('/api/uploadComment', {
       method: 'POST',
       body: JSON.stringify({
         newComment: comment,
