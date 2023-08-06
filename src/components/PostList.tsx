@@ -93,13 +93,14 @@ function PostList() {
         {posts && posts.length !== 0 && (
           <IconButton
             size="large"
+            className="mb-2"
             onClick={() =>
               setPageNum(() => {
                 return pageNum + 1;
               })
             }
           >
-            <GrLinkNext className={iconStyle} />
+            <GrLinkNext className={iconStyle} fill="#fff" />
           </IconButton>
         )}
         {!isLoading && posts?.length == 0 && (

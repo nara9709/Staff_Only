@@ -10,7 +10,7 @@ import useSWR, { useSWRConfig } from 'swr';
 import moment from 'moment';
 import { DefaultCalendar } from '@/model/calendar';
 import useMe from '@/hooks/useMe';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import ViewWorkingHour from './ViewWorkingHour';
 
 type ValuePiece = Date | null | string;
@@ -27,6 +27,10 @@ function Calendars() {
   const { user } = useMe();
   const { mutate: globalMutate } = useSWRConfig();
   const router = useRouter();
+
+  if (!user) {
+    redirect('/login');
+  }
 
   // 새로운 근무시간 업로드
   const handdleSubmit = (
