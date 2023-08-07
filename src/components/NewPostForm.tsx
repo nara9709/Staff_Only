@@ -45,7 +45,7 @@ function NewPostForm() {
     formData.append('userId', user.id ?? '');
     formData.append('category', category ?? '');
 
-    fetch('/api/posts', { method: 'POST', body: formData })
+    fetch('/api/posts/upload', { method: 'POST', body: formData })
       .then((res) => {
         if (!res.ok) {
           setError(`${res.status} ${res.statusText}`);
