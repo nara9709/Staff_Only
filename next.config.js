@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://staff-only-rose.vercel.app//:path*',
+      },
+    ];
+  },
   crossOrigin: 'anonymous',
   headers: [
     {
