@@ -42,7 +42,7 @@ function PostComments({ authorId, postId }: Props) {
   // 새로운 댓글 업로드
   const uploadNewComment = (comment: string) => {
     setIsFetching(true);
-    fetch('http://localhost:3000/api/uploadComment', {
+    fetch('/api/uploadComment', {
       method: 'POST',
       body: JSON.stringify({
         newComment: comment,
