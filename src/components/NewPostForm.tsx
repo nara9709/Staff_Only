@@ -12,7 +12,7 @@ import { useSWRConfig } from 'swr';
 function NewPostForm() {
   const { user } = useMe();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | null>();
   const [category, setCategory] = useState('');
   const subjectRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -55,7 +55,12 @@ function NewPostForm() {
         router.push('/');
       })
       .then(() => router.push('/'))
-      .catch((err) => setError(err.toString()))
+      .catch((err) => {
+        setError(err.toString());
+        setTimeout(() => {
+          setError(null);
+        }, 2000);
+      })
       .finally(() => setLoading(false));
   };
 

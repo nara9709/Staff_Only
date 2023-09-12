@@ -19,6 +19,8 @@ function Avatar({ image, name, size, isRing }: Props) {
         src={image}
         alt={`${name}'s image`}
         className="rounded-full object-cover"
+        width={100}
+        height={100}
       />
     </div>
   );
